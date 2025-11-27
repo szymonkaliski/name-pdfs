@@ -1,9 +1,9 @@
 import { cpus } from "os";
 import { basename, dirname, join } from "path";
 import { rename } from "fs/promises";
-import { extractPdfData, formatMetadata } from "./pdf-extractor.js";
-import { queryFilename } from "./query.js";
-import { createSpinner } from "./spinner.js";
+import { extractPdfData, formatMetadata } from "./pdf-extractor";
+import { queryFilename } from "./query";
+import { createSpinner } from "./spinner";
 
 export interface ProcessResult {
   status: "success" | "failed" | "skipped";
@@ -78,7 +78,6 @@ async function processPdf(
 class PromisePool {
   private concurrency: number;
   private running = 0;
-  private queue: Array<() => Promise<void>> = [];
 
   constructor(concurrency: number) {
     this.concurrency = concurrency;

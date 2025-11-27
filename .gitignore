@@ -1,5 +1,5 @@
 node_modules/
 dist/
 *.log
+.claude
 .DS_Store
-.name-pdfs-key

@@ -1,5 +1,5 @@
 import { checkbox } from "@inquirer/prompts";
-import type { ProcessResult } from "./processor.js";
+import type { ProcessResult } from "./processor";
 
 export async function displayResultsAndConfirm(
   results: ProcessResult[],
