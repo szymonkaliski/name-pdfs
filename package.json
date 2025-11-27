@@ -1,7 +1,7 @@
 {
   "name": "name-pdfs",
   "version": "1.0.0",
-  "description": "Intelligently rename PDF files using Claude AI",
+  "description": "Auto-rename PDF files using Claude AI",
   "type": "module",
   "bin": {
     "name-pdfs": "./dist/bin/name-pdfs.js"
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write 'src/**/*.ts'",
     "prepublishOnly": "npm run build"
   },
   "author": "",
