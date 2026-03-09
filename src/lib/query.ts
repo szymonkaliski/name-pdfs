@@ -11,7 +11,7 @@ function buildRenamePrompt(
   metadata: string,
   text: string,
 ): string {
-  return `Based on the PDF metadata and extracted text below, suggest a proper academic paper filename in the format "Title - Subtitle.pdf".
+  return `Based on the PDF metadata and extracted text below, suggest a clean filename.
 
 Rules:
 1. Use proper title case
@@ -20,6 +20,7 @@ Rules:
 4. Remove special characters that are problematic in filenames (keep only: a-zA-Z0-9 spaces - _ .)
 5. Keep the name concise but descriptive
 6. Ensure the .pdf extension is included
+7. Do NOT include edition numbers, volume numbers, or publication years in the filename
 
 IMPORTANT: Output ONLY the new filename, nothing else. No explanations, no commands, just the filename.
 

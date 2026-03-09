@@ -1,42 +1,49 @@
 #!/usr/bin/env node
 
-import { existsSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import { resolve } from "path";
-import { getApiKey } from "../lib/api-key.js";
+import { ensureAuth } from "../lib/api-key.js";
 import { processAllPdfs, applyRenames } from "../lib/processor.js";
 import { displayResultsAndConfirm } from "../lib/tui.js";
 
 async function main() {
   const args = process.argv.slice(2);
 
-  if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
+  if (args.includes("--help") || args.includes("-h")) {
     console.log(`
 name-pdfs - Intelligently rename PDF files using Claude AI
 
 Usage:
-  name-pdfs [options] <file1.pdf> [file2.pdf] [...]
+  name-pdfs [options] [file1.pdf] [file2.pdf] [...]
+
+  If no files are specified, all PDFs in the current directory are used.
 
 Options:
   --debug    Show verbose debug information (full prompts/responses)
   --help     Show this help message
 
 Examples:
+  name-pdfs
   name-pdfs paper.pdf
-  name-pdfs *.pdf
   name-pdfs --debug document.pdf
 
-Environment:
-  ANTHROPIC_API_KEY    API key for Claude (or use ~/.name-pdfs-key file)
+Auth (checked in order):
+  ANTHROPIC_API_KEY    API key for Claude
+  ~/.name-pdfs-key     File containing your API key
+  claude login         Claude Code subscription (fallback)
 `);
     process.exit(0);
   }
 
   const debug = args.includes("--debug");
-  const pdfFiles = args.filter((arg) => !arg.startsWith("--"));
+  let pdfFiles = args.filter((arg) => !arg.startsWith("--"));
 
   if (pdfFiles.length === 0) {
-    console.error("Error: No PDF files specified");
-    process.exit(1);
+    pdfFiles = readdirSync(".").filter((f) => f.toLowerCase().endsWith(".pdf"));
+    if (pdfFiles.length === 0) {
+      console.error("No PDF files found in current directory");
+      process.exit(1);
+    }
   }
 
   const validFiles: string[] = [];
@@ -58,14 +65,7 @@ Environment:
     process.exit(1);
   }
 
-  try {
-    await getApiKey();
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-    process.exit(1);
-  }
+  await ensureAuth();
 
   try {
     const results = await processAllPdfs(validFiles, { debug });

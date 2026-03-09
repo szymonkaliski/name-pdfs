@@ -16,7 +16,25 @@ export interface PdfData {
 
 export async function extractPdfData(filePath: string): Promise<PdfData> {
   const dataBuffer = await readFile(filePath);
-  const data = await pdfParse(dataBuffer);
+  const origLog = console.log;
+  const origWarn = console.warn;
+  console.log = (...args: any[]) => {
+    if (typeof args[0] === "string" && args[0].includes("private use area"))
+      return;
+    origLog.apply(console, args);
+  };
+  console.warn = (...args: any[]) => {
+    if (typeof args[0] === "string" && args[0].includes("private use area"))
+      return;
+    origWarn.apply(console, args);
+  };
+  let data;
+  try {
+    data = await pdfParse(dataBuffer);
+  } finally {
+    console.log = origLog;
+    console.warn = origWarn;
+  }
 
   return {
     metadata: {
