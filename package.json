@@ -15,14 +15,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@anthropic-ai/claude-agent-sdk": "^0.1.55",
-    "@inquirer/prompts": "^8.0.1",
+    "@anthropic-ai/claude-agent-sdk": "^0.2.71",
+    "@inquirer/prompts": "^8.3.0",
     "pdf-parse": "^1.1.1"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.3.5",
     "@types/pdf-parse": "^1.1.5",
-    "prettier": "^3.6.2",
+    "prettier": "^3.8.1",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
   },
